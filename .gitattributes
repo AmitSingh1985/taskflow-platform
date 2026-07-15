@@ -1,0 +1,40 @@
+# Auto detect text files
+* text=auto
+
+# Java
+*.java text
+
+# Kotlin
+*.kt text
+
+# XML
+*.xml text
+
+# YAML
+*.yml text
+*.yaml text
+
+# JSON
+*.json text
+
+# Markdown
+*.md text
+
+# Shell
+*.sh text eol=lf
+
+# Docker
+Dockerfile text
+
+# Windows scripts
+*.bat text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.zip binary
+*.pdf binary
