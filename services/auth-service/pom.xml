@@ -1,233 +1,252 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="
-            https://maven.apache.org/POM/4.0.0
-            https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
-        <relativePath/>
-    </parent>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.4</version>
+		<relativePath />
+	</parent>
 
-    <groupId>com.taskflow</groupId>
-    <artifactId>auth-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>auth-service</name>
-    <description>Authentication Service for TaskFlow Platform</description>
+	<groupId>com.taskflow</groupId>
+	<artifactId>auth-service</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>auth-service</name>
+	<description>Authentication Service for TaskFlow Platform</description>
 
-    <properties>
-        <java.version>21</java.version>
+	<properties>
+		<java.version>21</java.version>
 
-        <springdoc.version>2.8.9</springdoc.version>
-        <testcontainers.version>1.21.3</testcontainers.version>
-        <spotless.version>2.44.4</spotless.version>
-        <jacoco.version>0.8.13</jacoco.version>
-    </properties>
+		<springdoc.version>2.8.9</springdoc.version>
+		<testcontainers.version>1.21.3</testcontainers.version>
+		<spotless.version>2.44.4</spotless.version>
+		<jacoco.version>0.8.13</jacoco.version>
+	</properties>
 
-    <!-- ========================= -->
-    <!-- Dependencies -->
-    <!-- ========================= -->
+	<!-- ========================= -->
+	<!-- Dependencies -->
+	<!-- ========================= -->
 
-    <dependencies>
+	<dependencies>
 
-        <!-- Spring Boot -->
+		<!-- Spring Boot -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 
-        <!-- Security -->
+		<!-- Security -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
-        <!-- Database -->
+		<!-- Database -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <!--<scope>runtime</scope>-->
-        </dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<!--<scope>runtime</scope>-->
+		</dependency>
 
-        <!-- Flyway -->
+		<!-- Flyway -->
 
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-postgresql</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-database-postgresql</artifactId>
+		</dependency>
 
-        <!-- OpenAPI -->
+		<!-- OpenAPI -->
 
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${springdoc.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
 
-        <!-- Lombok -->
+		<!-- Lombok -->
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 
-        <!-- Configuration Processor -->
+		<!-- Configuration Processor -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 
-        <!-- Development -->
+		<!-- Development -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
 
-        <!-- ========================= -->
-        <!-- Testing -->
-        <!-- ========================= -->
+		<!-- ========================= -->
+		<!-- Testing -->
+		<!-- ========================= -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${testcontainers.version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${testcontainers.version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-    </dependencies>
+		<!-- Source: https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.7</version>
+		</dependency>
 
-    <!-- ========================= -->
-    <!-- Build -->
-    <!-- ========================= -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.7</version>
+			<scope>runtime</scope>
+		</dependency>
 
-    <build>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.7</version>
+			<scope>runtime</scope>
+		</dependency>
 
-        <plugins>
+	</dependencies>
 
-            <!-- Spring Boot -->
+	<!-- ========================= -->
+	<!-- Build -->
+	<!-- ========================= -->
 
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+	<build>
 
-            <!-- Compiler -->
+		<plugins>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <release>${java.version}</release>
-                </configuration>
-            </plugin>
+			<!-- Spring Boot -->
 
-            <!-- JaCoCo -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
+			<!-- Compiler -->
 
-                <executions>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<release>${java.version}</release>
+				</configuration>
+			</plugin>
 
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
+			<!-- JaCoCo -->
 
-                    <execution>
-                        <id>report</id>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
 
-                        <phase>verify</phase>
+				<executions>
 
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
 
-                    </execution>
+					<execution>
+						<id>report</id>
 
-                </executions>
+						<phase>verify</phase>
 
-            </plugin>
+						<goals>
+							<goal>report</goal>
+						</goals>
 
-            <!-- Spotless -->
+					</execution>
 
-            <plugin>
+				</executions>
 
-                <groupId>com.diffplug.spotless</groupId>
+			</plugin>
 
-                <artifactId>spotless-maven-plugin</artifactId>
+			<!-- Spotless -->
 
-                <version>${spotless.version}</version>
+			<plugin>
 
-                <configuration>
+				<groupId>com.diffplug.spotless</groupId>
 
-                    <java>
+				<artifactId>spotless-maven-plugin</artifactId>
 
-                        <googleJavaFormat/>
+				<version>${spotless.version}</version>
 
-                    </java>
+				<configuration>
 
-                </configuration>
+					<java>
 
-            </plugin>
+						<googleJavaFormat />
 
-        </plugins>
+					</java>
 
-    </build>
+				</configuration>
+
+			</plugin>
+
+		</plugins>
+
+	</build>
 
 </project>
