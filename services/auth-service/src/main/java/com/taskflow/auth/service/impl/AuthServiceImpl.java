@@ -1,24 +1,31 @@
-package com.taskflow.auth.service;
+package com.taskflow.auth.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.taskflow.auth.dto.LoginDTO;
-import com.taskflow.auth.dto.RegistrationDTO;
+import com.common.jwt.service.JwtService;
+import com.taskflow.auth.dto.request.LoginDTO;
+import com.taskflow.auth.dto.request.RegistrationDTO;
+import com.taskflow.auth.dto.rseponse.LoginResponse;
 import com.taskflow.auth.entity.User;
 import com.taskflow.auth.repository.UserRepository;
-import com.taskflow.auth.response.LoginResponse;
+import com.taskflow.auth.service.AuthService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 	
 	@Value("${jwt.expiration}")
     private long expiration;
+	
+	@Value("${jwt.secret}")
+    private String secret;
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
@@ -64,8 +71,9 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		// String token = jwtService.generateToken(user);
+		Map<String,Object> map =new HashMap<String, Object>();
 
-		String token = jwtService.generateToken(user);
+		String token = jwtService.generateToken(user.getUsername(),map);
 
 		LoginResponse response = new LoginResponse();
 		response.setUserName(user.getUsername());

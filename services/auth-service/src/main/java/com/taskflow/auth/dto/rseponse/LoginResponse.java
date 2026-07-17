@@ -1,4 +1,4 @@
-package com.taskflow.auth.response;
+package com.taskflow.auth.dto.rseponse;
 
 import java.util.Date;
 

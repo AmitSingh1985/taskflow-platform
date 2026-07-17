@@ -1,4 +1,4 @@
-package com.taskflow.auth.dto;
+package com.taskflow.auth.dto.request;
 
 import lombok.Data;
 

@@ -5,14 +5,20 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
+	<!--<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.4</version>
 		<relativePath />
+	</parent>-->
+	<parent>
+		<groupId>com.taskflow</groupId>
+		<artifactId>taskflow-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../../pom.xml</relativePath> <!-- Points up two levels to
+		root -->
 	</parent>
-
-	<groupId>com.taskflow</groupId>
+	<groupId>com.taskflow.auth</groupId>
 	<artifactId>auth-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>auth-service</name>
@@ -165,8 +171,16 @@
 			<version>0.12.7</version>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<!-- Common JWT Generator-->
+		<dependency>
+			<groupId>com.common.jwt</groupId>
+			<artifactId>jwt-generator</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
 	</dependencies>
+	
 
 	<!-- ========================= -->
 	<!-- Build -->

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://apache.org"
+         xmlns:xsi="http://w3.org"
+         xsi:schemaLocation="http://apache.org http://apache.org">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 1. Inherit from Spring Boot Starter Parent globally -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.4</version>
+        <relativePath/> <!-- Look up parent from repository -->
+    </parent>
+
+    <!-- 2. Your Parent Module coordinates -->
+    <groupId>com.taskflow</groupId>
+    <artifactId>taskflow-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging> <!-- CRITICAL: Must be pom, not jar -->
+
+    <!-- 3. Global properties shared across all modules -->
+    <properties>
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jjwt.version>0.12.5</jjwt.version>
+    </properties>
+
+    <!-- 4. Explicitly list your child module folder names -->
+    <modules>
+        <module>common/jwt-generator</module>
+		<module>services/auth-service</module>		
+        
+    </modules>
+
+    <!-- 5. Centralized version management for custom libraries -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Define the JWT Utility version here so children don't hardcode it -->
+            <dependency>
+                <groupId>com.common.jwt</groupId>
+                <artifactId>jwt-generator</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <!-- JJWT API definitions -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
