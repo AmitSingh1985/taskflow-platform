@@ -28,6 +28,7 @@
     <!-- 4. Explicitly list your child module folder names -->
     <modules>
         <module>common/jwt-generator</module>
+        <module>common/common-core</module>
 		<module>services/auth-service</module>		
     </modules>
 

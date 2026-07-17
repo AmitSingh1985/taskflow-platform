@@ -1,6 +1,5 @@
 package com.taskflow.auth.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,32 +10,32 @@ import com.taskflow.auth.dto.request.LoginDTO;
 import com.taskflow.auth.dto.request.RegistrationDTO;
 import com.taskflow.auth.dto.rseponse.LoginResponse;
 import com.taskflow.auth.service.AuthService;
+import com.taskflow.common.api.ApiResponse;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthController {
+public class AuthController<T> {
 
-    private final AuthService authService;
+	private final AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+	public AuthController(AuthService authService) {
+		this.authService = authService;
+	}
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(
-            @RequestBody RegistrationDTO request) {
+	@PostMapping("/register")
+	public ResponseEntity<ApiResponse<RegistrationDTO>> register(@RequestBody RegistrationDTO request) {
 
-        authService.register(request);
+		authService.register(request);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body("User registered successfully.");
-    }
+		return ResponseEntity.ok(ApiResponse.success("User registered successfully", request));
+	}
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
-            @RequestBody LoginDTO request) {
+	@PostMapping("/login")
+	public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginDTO request) {
 
-        return ResponseEntity.ok(authService.login(request));
-    }
+		LoginResponse loginResponse = authService.login(request);
+
+		return ResponseEntity.ok(ApiResponse.success("Login successful", loginResponse));
+
+	}
 }
