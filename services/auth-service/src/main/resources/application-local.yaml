@@ -1,8 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/taskflow_auth
-    username: postgres
-    password: postgres123
+    #url: jdbc:postgresql://localhost:5433/taskflow_auth
+    #username: postgres
+    #password: postgres123
+    #driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:

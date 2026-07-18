@@ -7,6 +7,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
@@ -20,9 +22,11 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String username;
 
+	@NotBlank
 	@Column(nullable = false, unique = true)
 	private String email;
-
+	
+	@NotBlank
 	@Column(nullable = false)
 	private String password;
 

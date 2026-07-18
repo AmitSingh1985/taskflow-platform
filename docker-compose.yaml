@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: taskflow-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: taskflow_auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - taskflow-network
+
+
+  auth-service:
+    image: taskflow/auth-service:1.0
+    container_name: auth-service
+
+    depends_on:
+      - postgres
+
+    ports:
+      - "8081:8081"
+
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      DB_URL: jdbc:postgresql://postgres:5432/taskflow_auth
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+
+    networks:
+      - taskflow-network
+
+
+volumes:
+  postgres_data:
+
+networks:
+  taskflow-network:

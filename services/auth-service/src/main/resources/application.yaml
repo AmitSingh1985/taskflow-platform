@@ -1,6 +1,10 @@
 spring:
   application:
     name: auth-service
+    security:
+      jwt:
+        access-token-validity-minutes: 15
+        refresh-token-validity-days: 7
 
   profiles:
     active: local
@@ -22,7 +26,11 @@ logging:
   level:
     root: INFO
 
-jwt:
+    com.taskflow.auth: DEBUG
+
+    com.common.jwt: DEBUG
+
+jwtcred:
   secret: 9d8f7a6b5c4d3e2f1a9b8c7d6e5f4a3b9d8f7a6b5c4d3e2f1a9b8c7d6e5f4a3b
   expiration: 3600000
   
