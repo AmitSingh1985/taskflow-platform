@@ -10,24 +10,19 @@
 		<version>1.0.0</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
-	<groupId>com.taskflow.common</groupId>
-	<artifactId>common-core</artifactId>
+	<groupId>com.taskflow.discovery</groupId>
+	<artifactId>discovery-server</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<scope>provided</scope>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
-
 
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-
-
 	</dependencies>
 </project>

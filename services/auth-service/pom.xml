@@ -65,10 +65,10 @@
 
 		<!-- Database -->
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+		</dependency>-->
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -183,6 +183,17 @@
 			<groupId>com.taskflow.common</groupId>
 			<artifactId>common-core</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.taskflow.jpa</groupId>
+			<artifactId>common-jpa</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
 	</dependencies>

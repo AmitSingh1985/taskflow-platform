@@ -4,9 +4,9 @@ spring:
     #username: postgres
     #password: postgres123
     #driver-class-name: org.postgresql.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/taskflow_auth}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres123}
     driver-class-name: org.postgresql.Driver
 
   jpa:

@@ -1,4 +1,4 @@
-package com.taskflow.common.model;
+package com.taskflow.jpa.model;
 
 import java.time.LocalDateTime;
 
