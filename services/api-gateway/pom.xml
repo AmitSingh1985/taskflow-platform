@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+		<groupId>com.taskflow</groupId>
+		<artifactId>taskflow-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../../pom.xml</relativePath> <!-- Points up two levels to
+		root -->
+	</parent>
+	<groupId>com.taskflow.gateway</groupId>
+    <artifactId>api-gateway</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>api-gateway</name>
+
+    <dependencies>
+
+        <!-- Spring Cloud Gateway -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
+        </dependency>
+
+        <!-- Eureka Client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <!-- Actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Common module -->
+        <!-- Common JWT Generator-->
+		<dependency>
+			<groupId>com.common.jwt</groupId>
+			<artifactId>jwt-generator</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- Common Core module-->
+		<dependency>
+			<groupId>com.taskflow.common</groupId>
+			<artifactId>common-core</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+    </dependencies>
+
+</project>
