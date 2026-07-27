@@ -1,4 +1,4 @@
-package com.taskflow.auth.controller.config;
+package com.taskflow.auth.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "application.security.jwt")
+@ConfigurationProperties(prefix = "spring.application.security.jwt")
 public class JwtSecurityProperties {
 
 	private long accessTokenValidityMinutes;

@@ -101,7 +101,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
 		</dependency>
 
 		<!-- Configuration Processor -->
@@ -184,7 +183,7 @@
 			<artifactId>common-core</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.taskflow.jpa</groupId>
 			<artifactId>common-jpa</artifactId>
