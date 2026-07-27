@@ -9,19 +9,30 @@ import java.util.function.Function;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JwtService {
 
     private final Key key;
-    private final long expirationTime;
+    private final long expirationTimeGlobal;
 
     public JwtService(String secret, long expirationTime) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.expirationTime = expirationTime;
+        this.expirationTimeGlobal = expirationTime;
     }
 
     // 1. Generate Token
-    public String generateToken(String username, Map<String, Object> extraClaims) {
+    public String generateToken(String username, Map<String, Object> extraClaims,Long expirationTime) {
+    	Date issuedAt = new Date(System.currentTimeMillis());
+    	Date expiration = new Date(System.currentTimeMillis() + expirationTime);
+
+    	log.info("Issued At : {}", issuedAt);
+    	log.info("Expiration : {}", expiration);
+    	log.info("Expiration Time(ms): {}", expirationTime);
+		/*
+		 * long expirationTimeCalc = expirationTime * 60 * 1000L;
+		 */
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(username)
@@ -29,6 +40,10 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(key)
                 .compact();
+    }
+    
+    public String extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", String.class));
     }
 
     // 2. Extract Username
@@ -62,5 +77,9 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+    
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 }

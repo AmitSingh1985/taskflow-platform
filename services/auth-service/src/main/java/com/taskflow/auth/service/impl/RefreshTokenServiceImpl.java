@@ -30,9 +30,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 	public RefreshToken createRefreshToken(User user) {
 		log.info("Generating refresh token for user {}", user.getUsername());
 
-		RefreshToken refreshToken = RefreshToken.builder().token(RefreshTokenGenerator.generate()).user(user)
-				.expiryDate(LocalDateTime.now().plusDays(REFRESH_TOKEN_VALIDITY_DAYS)).revoked(false).build();
-
+		RefreshToken refreshToken = new RefreshToken();//RefreshToken.builder().token(RefreshTokenGenerator.generate()).user(user)
+				//.expiryDate(LocalDateTime.now().plusDays(REFRESH_TOKEN_VALIDITY_DAYS)).revoked(false).build();
+		refreshToken.setToken(RefreshTokenGenerator.generate());
+		refreshToken.setUser(user);
+		refreshToken.setExpiryDate(LocalDateTime.now().plusDays(REFRESH_TOKEN_VALIDITY_DAYS));
+		refreshToken.setRevoked(false);
 		refreshToken.setCreatedAt(LocalDateTime.now());
 		refreshToken.setUpdatedAt(LocalDateTime.now());
 		RefreshToken savedToken = refreshTokenRepository.save(refreshToken);

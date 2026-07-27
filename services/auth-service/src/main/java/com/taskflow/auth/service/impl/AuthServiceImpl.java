@@ -1,6 +1,7 @@
 package com.taskflow.auth.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.common.jwt.service.JwtService;
-import com.taskflow.auth.controller.config.JwtSecurityProperties;
+import com.taskflow.auth.config.JwtSecurityProperties;
 import com.taskflow.auth.dto.request.LoginDTO;
 import com.taskflow.auth.dto.request.RefreshTokenRequest;
 import com.taskflow.auth.dto.request.RegistrationDTO;
@@ -32,17 +33,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-	@Value("${jwtcred.expiration}")
-	private long expiration;
-
-	@Value("${jwtcred.secret}")
-	private String secret;
-
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtService jwtService;
 	private final RefreshTokenService refreshTokenService;
 	private final JwtSecurityProperties jwtProperties;
+
 
 	public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService,
 			RefreshTokenService refreshTokenService,JwtSecurityProperties jwtSecurityProperties) {
@@ -87,16 +83,22 @@ public class AuthServiceImpl implements AuthService {
 		}
 		
 		Map<String,Object> map= new HashMap<String, Object>();
-		String accessToken = jwtService.generateToken(user.getUsername(),map);
+		map.put("userId", user.getId());
+		///map.put("role", user.getRole().name());
+		Long expirationInMillis=jwtProperties.getAccessTokenValidityMinutes() * 60 * 1000L;
+
+		String accessToken = jwtService.generateToken(user.getUsername(),map,expirationInMillis);
 
 		RefreshToken refreshToken =
 		        refreshTokenService.createRefreshToken(user);
+		
+		Date expiresIn= jwtService.extractExpiration(accessToken);
 
 		return LoginResponse.builder().username(request.getUserName())
 		        .accessToken(accessToken)
 		        .refreshToken(refreshToken.getToken())
 		        .tokenType("Bearer")
-		        .expiresIn(jwtProperties.getAccessTokenValidityMinutes() * 60)
+		        .expiresIn(expiresIn)
 		        .build();
 	}
 	
@@ -113,9 +115,11 @@ public class AuthServiceImpl implements AuthService {
 
 	    RefreshToken newRefreshToken =
 	            refreshTokenService.rotateRefreshToken(existingToken);
-
-	    String accessToken = jwtService.generateToken(user.getUsername(),null);
-
+	    Map<String,Object> map=new HashMap<String, Object>();
+	    map.put("userId", user.getId());
+	    Long expirationInMillis=jwtProperties.getAccessTokenValidityMinutes() * 60 * 1000L;
+	    String accessToken = jwtService.generateToken(user.getUsername(),map,expirationInMillis);
+        
 	    log.info("Access token refreshed successfully for user {}", user.getEmail());
 
 	    return RefreshTokenResponse.builder()

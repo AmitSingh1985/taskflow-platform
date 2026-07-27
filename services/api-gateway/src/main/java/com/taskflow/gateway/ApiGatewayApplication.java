@@ -1,4 +1,4 @@
-package com.taskflow.gateway.application;
+package com.taskflow.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

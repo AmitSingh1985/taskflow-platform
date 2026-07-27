@@ -20,7 +20,16 @@ services:
 
     networks:
       - taskflow-network
+  
+  discovery-server:
+    image: taskflow/discovery-server:1.0
+    container_name: discovery-server
 
+    ports:
+      - "8761:8761"
+
+    networks:
+      - taskflow-network
 
   auth-service:
     image: taskflow/auth-service:1.0
@@ -37,6 +46,25 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/taskflow_auth
       DB_USERNAME: postgres
       DB_PASSWORD: postgres123
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+
+    networks:
+      - taskflow-network
+  
+  api-gateway:
+    image: taskflow/api-gateway:1.0
+    container_name: api-gateway
+
+    depends_on:
+      - discovery-server
+
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+
+    ports:
+      - "8080:8080"
 
     networks:
       - taskflow-network

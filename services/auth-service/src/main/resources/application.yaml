@@ -3,8 +3,8 @@ spring:
     name: auth-service
     security:
       jwt:
-        access-token-validity-minutes: 15
-        refresh-token-validity-days: 7
+        access-token-validity-minutes: 5
+        refresh-token-validity-days: 7  
 
   profiles:
     active: local
@@ -37,7 +37,7 @@ jwtcred:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone:  ${EUREKA_SERVER:http://localhost:8761/eureka/}
 
     register-with-eureka: true
     fetch-registry: true

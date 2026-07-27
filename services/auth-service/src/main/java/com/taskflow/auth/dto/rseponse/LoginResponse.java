@@ -1,5 +1,7 @@
 package com.taskflow.auth.dto.rseponse;
 
+import java.util.Date;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,5 +15,5 @@ public class LoginResponse {
 
 	private String tokenType;
 
-	private Long expiresIn;
+	private Date expiresIn;
 }
