@@ -37,6 +37,8 @@
 		<module>services/discovery-server</module>
 		<module>services/auth-service</module>
 		<module>services/api-gateway</module>
+		<module>services/project-service</module>
+		<module>services/task-service</module>
 	</modules>
 
 	<!-- 5. Centralized version management for custom libraries -->
@@ -44,11 +46,11 @@
 		<dependencies>
 			<!-- Define the JWT Utility version here so children don't hardcode
 			it -->
-			<dependency>
+			<!--<dependency>
 				<groupId>com.common.jwt</groupId>
 				<artifactId>jwt-generator</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
+			</dependency>-->
 			<!-- JJWT API definitions -->
 			<dependency>
 				<groupId>io.jsonwebtoken</groupId>
