@@ -3,6 +3,7 @@ package com.taskflow.project.service;
 import java.util.List;
 import java.util.UUID;
 
+import com.taskflow.project.document.ProjectDocument;
 import com.taskflow.project.dto.internal.ProjectAccessResponse;
 import com.taskflow.project.dto.internal.ProjectInfoResponse;
 import com.taskflow.project.request.CreateProjectRequest;
@@ -24,5 +25,7 @@ public interface ProjectService {
 	ProjectInfoResponse getProjectInfo(UUID projectId);
 
 	ProjectAccessResponse hasAccess(UUID projectId, UUID userId);
+	
+	List<ProjectDocument> elasticSearch(String keyword);
 
 }

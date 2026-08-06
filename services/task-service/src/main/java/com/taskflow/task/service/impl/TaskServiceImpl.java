@@ -5,9 +5,11 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.taskflow.common.events.TaskCreatedEvent;
 import com.taskflow.task.OpenFeign.ProjectClient;
 import com.taskflow.task.dto.internal.ProjectAccessResponse;
 import com.taskflow.task.dto.internal.ProjectInfoResponse;
+import com.taskflow.task.dto.producer.TaskEventProducer;
 import com.taskflow.task.entity.Task;
 import com.taskflow.task.enums.TaskStatus;
 import com.taskflow.task.repository.TaskRepository;
@@ -25,6 +27,8 @@ public class TaskServiceImpl implements TaskService {
 	private final TaskRepository repository;
 
 	private final ProjectClient projectClient;
+
+	private final TaskEventProducer taskEventProducer;
 
 	@Override
 	public TaskResponse create(CreateTaskRequest request, UUID userId) {
@@ -47,6 +51,21 @@ public class TaskServiceImpl implements TaskService {
 				.estimatedHours(request.getEstimatedHours()).status(TaskStatus.TODO).build();
 
 		task = repository.save(task);
+		TaskCreatedEvent event = new TaskCreatedEvent(
+
+				task.getId(),
+
+				task.getProjectId(),
+
+				task.getAssignedTo(),
+
+				task.getTitle(),
+
+				task.getCreatedAt()
+
+		);
+
+		taskEventProducer.publishTaskCreated(event);
 
 		return map(task);
 	}

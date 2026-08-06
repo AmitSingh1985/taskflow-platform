@@ -39,6 +39,7 @@
 		<module>services/api-gateway</module>
 		<module>services/project-service</module>
 		<module>services/task-service</module>
+		<module>services/notification-service</module>
 	</modules>
 
 	<!-- 5. Centralized version management for custom libraries -->

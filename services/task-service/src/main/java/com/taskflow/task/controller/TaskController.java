@@ -24,7 +24,7 @@ public class TaskController {
 
     private final TaskService service;
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskResponse create(
             @RequestBody @Valid CreateTaskRequest request,

@@ -3,14 +3,21 @@ package com.taskflow.project.service.impl;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.taskflow.project.document.ProjectDocument;
 import com.taskflow.project.dto.internal.ProjectAccessResponse;
 import com.taskflow.project.dto.internal.ProjectInfoResponse;
 import com.taskflow.project.entity.Project;
 import com.taskflow.project.enums.ProjectStatus;
 import com.taskflow.project.repository.ProjectMemberRepository;
 import com.taskflow.project.repository.ProjectRepository;
+import com.taskflow.project.repository.ProjectSearchRepository;
 import com.taskflow.project.request.CreateProjectRequest;
 import com.taskflow.project.request.UpdateProjectRequest;
 import com.taskflow.project.response.ProjectResponse;
@@ -25,7 +32,9 @@ public class ProjectServiceImpl implements ProjectService {
 	private final ProjectRepository repository;
 
 	private final ProjectMemberRepository memberRepository;
-
+	
+	private final ProjectSearchRepository projectSearchRepository;
+	
 	@Override
 	public ProjectResponse create(CreateProjectRequest request, UUID ownerId) {
 
@@ -38,6 +47,11 @@ public class ProjectServiceImpl implements ProjectService {
 				.endDate(request.getEndDate()).build();
 
 		project = repository.save(project);
+		if(null != project) {
+			projectSearchRepository.save(
+			        mapSearchDocument(project)
+			);
+		}
 
 		return map(project);
 
@@ -46,7 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public ProjectResponse getById(UUID projectId, UUID loggedInUser) {
 
-		Project project = repository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
+		Project project = getProjectFromCache(projectId);
 
 		if (project.isArchived()) {
 			throw new RuntimeException("Project archived");
@@ -60,8 +74,15 @@ public class ProjectServiceImpl implements ProjectService {
 				throw new RuntimeException("Access denied");
 			}
 		}
-
+		
 		return map(project);
+	}
+	
+	@Cacheable(value = "projects", key = "#projectId")
+	public Project getProjectFromCache(UUID projectId) {
+
+	    return repository.findById(projectId)
+	            .orElseThrow(() -> new RuntimeException("Project not found"));
 	}
 
 	@Override
@@ -73,6 +94,9 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+	@CachePut(
+	        value = "projects",
+	        key = "#projectId")
 	public ProjectResponse update(UUID projectId, UUID ownerId, UpdateProjectRequest request) {
 
 		Project project = repository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
@@ -90,12 +114,20 @@ public class ProjectServiceImpl implements ProjectService {
 		project.setEndDate(request.getEndDate());
 
 		project = repository.save(project);
+		if(null!=project) {
+			projectSearchRepository.save(
+			        mapSearchDocument(project)
+			);
+		}
 
 		return map(project);
 
 	}
 
 	@Override
+	@CacheEvict(
+	        value = "projects",
+	        key = "#projectId")
 	public void delete(UUID projectId, UUID ownerId) {
 
 		Project project = repository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
@@ -108,7 +140,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 		project.setStatus(ProjectStatus.ARCHIVED);
 
-		repository.save(project);
+		project = repository.save(project);
+		if(null!=project && project.isArchived()) {
+			projectSearchRepository.deleteById(project.getId());
+		}
 
 	}
 
@@ -153,6 +188,36 @@ public class ProjectServiceImpl implements ProjectService {
 		response.setAuthorized(authorized);
 
 		return response;
+	}
+	
+	public ProjectDocument mapSearchDocument(Project project){
+
+	    return ProjectDocument.builder()
+
+	            .id(project.getId())
+
+	            .name(project.getName())
+
+	            .description(project.getDescription())
+
+	            .status(project.getStatus())
+
+	            .ownerId(project.getOwnerId())
+
+	            .startDate(project.getStartDate())
+
+	            .endDate(project.getEndDate())
+
+	            .build();
+
+	}
+	
+	@Override
+	public List<ProjectDocument> elasticSearch(String keyword){
+
+	    return projectSearchRepository
+	            .findByNameContaining(keyword);
+
 	}
 
 }
