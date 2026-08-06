@@ -3,6 +3,17 @@ spring:
     name: project-service
   profiles:
     active: local
+  
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  cache:
+    type: redis
+  
+  elasticsearch:
+    uris: http://localhost:9200
 
 server:
   port: 8082
