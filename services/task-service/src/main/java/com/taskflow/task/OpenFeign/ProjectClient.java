@@ -10,6 +10,8 @@ import com.taskflow.task.dto.internal.ProjectInfoResponse;
 
 @FeignClient(name = "PROJECT-SERVICE")
 public interface ProjectClient {
+	
+	
 
     @GetMapping("/api/internal/projects/{projectId}")
     ProjectInfoResponse getProject(

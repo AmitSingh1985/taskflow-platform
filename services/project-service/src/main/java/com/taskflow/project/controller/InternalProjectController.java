@@ -11,6 +11,7 @@ import com.taskflow.project.dto.internal.ProjectAccessResponse;
 import com.taskflow.project.dto.internal.ProjectInfoResponse;
 import com.taskflow.project.service.ProjectService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,23 +19,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InternalProjectController {
 
-    private final ProjectService projectService;
-    
-    @GetMapping("/{projectId}")
-    public ProjectInfoResponse getProject(
-            @PathVariable UUID projectId) {
+	private final ProjectService projectService;
 
-        return projectService.getProjectInfo(projectId);
+	@CircuitBreaker(name = "getProjectService", fallbackMethod = "getProjectServiceFallback")
+	@GetMapping("/{projectId}")
+	public ProjectInfoResponse getProject(@PathVariable UUID projectId) {
 
-    }
-    
-    @GetMapping("/{projectId}/access/{userId}")
-    public ProjectAccessResponse hasAccess(
-            @PathVariable UUID projectId,
-            @PathVariable UUID userId) {
+		return projectService.getProjectInfo(projectId);
 
-        return projectService.hasAccess(projectId, userId);
+	}
 
-    }
+	@GetMapping("/{projectId}/access/{userId}")
+	public ProjectAccessResponse hasAccess(@PathVariable UUID projectId, @PathVariable UUID userId) {
+
+		return projectService.hasAccess(projectId, userId);
+
+	}
+
+	public ProjectInfoResponse getProjectServiceFallback(UUID projectId, Exception exception) {
+
+		// temporary fallback behavior
+
+		return null;
+	}
 
 }
