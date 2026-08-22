@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.taskflow.common.events.TaskCreatedEvent;
-import com.taskflow.task.OpenFeign.ProjectClient;
+import com.taskflow.task.OpenFeign.ProjectClientService;
 import com.taskflow.task.dto.internal.ProjectAccessResponse;
 import com.taskflow.task.dto.internal.ProjectInfoResponse;
 import com.taskflow.task.dto.producer.TaskEventProducer;
@@ -26,7 +26,7 @@ public class TaskServiceImpl implements TaskService {
 
 	private final TaskRepository repository;
 
-	private final ProjectClient projectClient;
+	private final ProjectClientService projectClient;
 
 	private final TaskEventProducer taskEventProducer;
 

@@ -36,3 +36,44 @@ eureka:
 
   instance:
     prefer-ip-address: true
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - metrics
+          - prometheus
+
+  endpoint:
+    health:
+      show-details: always
+
+  metrics:
+    tags:
+      application: ${spring.application.name}    
+
+resilience4j:
+
+  circuitbreaker:
+
+    instances:
+
+      getProjectService:
+
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+
+        failure-rate-threshold: 50
+
+        wait-duration-in-open-state: 10s
+
+        permitted-number-of-calls-in-half-open-state: 3
+
+        minimum-number-of-calls: 5
+        
+        max-attempts: 3
+        
+        wait-duration: 500ms

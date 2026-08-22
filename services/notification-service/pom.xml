@@ -18,10 +18,10 @@
 		<relativePath>../../pom.xml</relativePath> <!-- Points up two levels to
 		root -->
 	</parent>
-	<groupId>com.taskflow.task</groupId>
-	<artifactId>task-service</artifactId>
+	<groupId>com.taskflow.notification</groupId>
+	<artifactId>notification-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>task-service</name>
+	<name>notification-service</name>
 	<description>Task Service for TaskFlow Platform</description>
 
 	<properties>
@@ -57,15 +57,12 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
+		</dependency>-->
 
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
+		
 
 		<dependency>
 			<groupId>org.flywaydb</groupId>
@@ -91,31 +88,11 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>com.taskflow.common</groupId>
 			<artifactId>common-core</artifactId>
 			<version>1.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>io.github.resilience4j</groupId>
-			<artifactId>resilience4j-spring-boot3</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 
 	</dependencies>
