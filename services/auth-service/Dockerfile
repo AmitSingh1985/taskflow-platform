@@ -1,6 +1,7 @@
 # ===============================
 # Build Stage
 # ===============================
+
 FROM maven:3.9.9-eclipse-temurin-21 AS builder
 
 WORKDIR /app
@@ -12,17 +13,24 @@ RUN mvn clean package \
     -am \
     -DskipTests
 
+
 # ===============================
 # Runtime Stage
 # ===============================
+
 FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
+# Copy application
 COPY --from=builder \
     /app/services/auth-service/target/auth-service-0.0.1-SNAPSHOT.jar \
     app.jar
 
+# Download/copy OpenTelemetry Java Agent
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar \
+    /otel/opentelemetry-javaagent.jar
+
 EXPOSE 8081
 
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java","-javaagent:/otel/opentelemetry-javaagent.jar","-jar","app.jar"]

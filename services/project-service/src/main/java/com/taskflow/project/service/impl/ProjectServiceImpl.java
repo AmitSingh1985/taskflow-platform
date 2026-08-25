@@ -22,9 +22,11 @@ import com.taskflow.project.response.ProjectResponse;
 import com.taskflow.project.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProjectServiceImpl implements ProjectService {
 
 	private final ProjectRepository repository;
@@ -35,11 +37,13 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	@Override
 	public ProjectResponse create(CreateProjectRequest request, UUID ownerId) {
+		
+		log.info("Create project process started.....");
 
 		if (repository.existsByNameAndOwnerId(request.getName(), ownerId)) {
 			throw new RuntimeException("Project already exists.");
 		}
-
+		
 		Project project = Project.builder().name(request.getName()).description(request.getDescription())
 				.ownerId(ownerId).status(ProjectStatus.ACTIVE).startDate(request.getStartDate())
 				.endDate(request.getEndDate()).build();
@@ -50,7 +54,7 @@ public class ProjectServiceImpl implements ProjectService {
 			        mapSearchDocument(project)
 			);
 		}
-
+		log.info("Create project process Ended.....");
 		return map(project);
 
 	}

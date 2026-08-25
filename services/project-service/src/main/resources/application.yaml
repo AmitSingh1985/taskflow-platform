@@ -6,14 +6,14 @@ spring:
   
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
   cache:
     type: redis
   
   elasticsearch:
-    uris: http://localhost:9200
+    uris: ${ELASTIC_SEARCH:http://localhost:9200}
 
 server:
   port: 8082
@@ -21,7 +21,8 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone:  ${EUREKA_SERVER:http://localhost:8761/eureka/}
+
     register-with-eureka: true
     fetch-registry: true
 
@@ -43,6 +44,10 @@ management:
       show-details: always
 
   metrics:
+    distribution:
+      percentiles-histogram:
+        # This turns on the hidden _bucket metrics for your HTTP endpoints
+        http.server.requests: true
     tags:
       application: ${spring.application.name}
 

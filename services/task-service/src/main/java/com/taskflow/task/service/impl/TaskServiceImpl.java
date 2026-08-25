@@ -12,16 +12,20 @@ import com.taskflow.task.dto.internal.ProjectInfoResponse;
 import com.taskflow.task.dto.producer.TaskEventProducer;
 import com.taskflow.task.entity.Task;
 import com.taskflow.task.enums.TaskStatus;
+import com.taskflow.task.exception.TaskNotCreatedException;
 import com.taskflow.task.repository.TaskRepository;
 import com.taskflow.task.request.CreateTaskRequest;
 import com.taskflow.task.request.UpdateTaskRequest;
 import com.taskflow.task.response.TaskResponse;
 import com.taskflow.task.service.TaskService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TaskServiceImpl implements TaskService {
 
 	private final TaskRepository repository;
@@ -31,21 +35,23 @@ public class TaskServiceImpl implements TaskService {
 	private final TaskEventProducer taskEventProducer;
 
 	@Override
+	@Transactional
 	public TaskResponse create(CreateTaskRequest request, UUID userId) {
 
 		ProjectInfoResponse project = projectClient.getProject(request.getProjectId());
 
 		if (project.isArchived()) {
-			throw new RuntimeException("Project archived");
+			throw new TaskNotCreatedException("Project archived");
 		}
 
 		ProjectAccessResponse access = projectClient.hasAccess(request.getProjectId(), userId);
 
 		if (!access.isAuthorized()) {
-			throw new RuntimeException("Access denied.");
+			throw new TaskNotCreatedException("Access denied.");
 		}
+		Task task = null;
 
-		Task task = Task.builder().projectId(request.getProjectId()).title(request.getTitle())
+		task = Task.builder().projectId(request.getProjectId()).title(request.getTitle())
 				.description(request.getDescription()).priority(request.getPriority())
 				.assignedTo(request.getAssignedTo()).createdBy(userId).dueDate(request.getDueDate())
 				.estimatedHours(request.getEstimatedHours()).status(TaskStatus.TODO).build();
