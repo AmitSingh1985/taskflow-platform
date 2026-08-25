@@ -17,10 +17,12 @@ import com.taskflow.gateway.util.RouteValidator;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationFilter implements GlobalFilter, Ordered {
 
     private final RouteValidator routeValidator;
@@ -30,6 +32,8 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
         var request = exchange.getRequest();
+        
+        log.info("inside auth filter'.."+request);
 
         // Skip public APIs
         if (!routeValidator.isSecured.test(request)) {

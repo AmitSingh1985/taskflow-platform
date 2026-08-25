@@ -30,7 +30,8 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone:  ${EUREKA_SERVER:http://localhost:8761/eureka/}
+
     register-with-eureka: true
     fetch-registry: true
 
@@ -52,8 +53,13 @@ management:
       show-details: always
 
   metrics:
+    distribution:
+      percentiles-histogram:
+        # This turns on the hidden _bucket metrics for your HTTP endpoints
+        http.server.requests: true
     tags:
-      application: ${spring.application.name}    
+      application: ${spring.application.name} 
+         
 
 resilience4j:
 
@@ -77,3 +83,7 @@ resilience4j:
         max-attempts: 3
         
         wait-duration: 500ms
+        
+        retry-exceptions:
+          - feign.FeignException
+          - java.io.IOException

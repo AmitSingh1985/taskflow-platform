@@ -1,0 +1,22 @@
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+
+    command:
+      - "--config=/etc/otelcol-contrib/otel-collector.yml"
+
+    volumes:
+      - ./otel-collector.yml:/etc/otelcol-contrib/otel-collector.yml:ro
+
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    
+    networks:
+      - taskflow-network
+
+    restart: unless-stopped
+
+networks:
+  taskflow-network:
+   

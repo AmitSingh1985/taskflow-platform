@@ -12,6 +12,10 @@ WORKDIR /app
 
 COPY --from=builder /app/services/api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar app.jar
 
+# Download/copy OpenTelemetry Java Agent
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar \
+    /otel/opentelemetry-javaagent.jar
+
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java","-javaagent:/otel/opentelemetry-javaagent.jar","-jar","app.jar"]
