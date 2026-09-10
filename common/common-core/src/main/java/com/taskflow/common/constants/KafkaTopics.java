@@ -9,5 +9,11 @@ public class KafkaTopics {
     public static final String TASK_UPDATED = "task-updated";
 
     public static final String TASK_DELETED = "task-deleted";
+    
+    public static final String PROJECT_CREATED = "project-created";
+
+    public static final String PROJECT_UPDATED = "project-updated";
+
+    public static final String PROJECT_DELETED = "project-deleted";
 
 }

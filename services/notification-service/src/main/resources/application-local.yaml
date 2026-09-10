@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/taskflow_notification
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/taskflow_notification}
     username: postgres
     password: postgres123
 

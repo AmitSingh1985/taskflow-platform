@@ -8,14 +8,14 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.taskflow.project.document.ProjectDocument;
+import com.taskflow.common.events.ProjectCreatedEvent;
 import com.taskflow.project.dto.internal.ProjectAccessResponse;
 import com.taskflow.project.dto.internal.ProjectInfoResponse;
 import com.taskflow.project.entity.Project;
 import com.taskflow.project.enums.ProjectStatus;
+import com.taskflow.project.kafka.producer.ProjectEventProducer;
 import com.taskflow.project.repository.ProjectMemberRepository;
 import com.taskflow.project.repository.ProjectRepository;
-import com.taskflow.project.repository.ProjectSearchRepository;
 import com.taskflow.project.request.CreateProjectRequest;
 import com.taskflow.project.request.UpdateProjectRequest;
 import com.taskflow.project.response.ProjectResponse;
@@ -33,7 +33,9 @@ public class ProjectServiceImpl implements ProjectService {
 
 	private final ProjectMemberRepository memberRepository;
 	
-	private final ProjectSearchRepository projectSearchRepository;
+	//private final ProjectSearchRepository projectSearchRepository;
+	
+	private final ProjectEventProducer projectEventProducer;
 	
 	@Override
 	public ProjectResponse create(CreateProjectRequest request, UUID ownerId) {
@@ -49,11 +51,18 @@ public class ProjectServiceImpl implements ProjectService {
 				.endDate(request.getEndDate()).build();
 
 		project = repository.save(project);
-		if(null != project) {
-			projectSearchRepository.save(
-			        mapSearchDocument(project)
-			);
+		if (null != project) {
+			ProjectCreatedEvent event = ProjectCreatedEvent.builder().projectId(project.getId().toString()).name(project.getName())
+					.description(project.getDescription()).status(project.getStatus().name())
+					.ownerId(project.getOwnerId().toString()).startDate(project.getStartDate()).endDate(project.getEndDate())
+					.build();
+
+			projectEventProducer.publishProjectCreated(event);
 		}
+		/*
+		 * if(null != project) { projectSearchRepository.save(
+		 * mapSearchDocument(project) ); }
+		 */
 		log.info("Create project process Ended.....");
 		return map(project);
 
@@ -116,11 +125,10 @@ public class ProjectServiceImpl implements ProjectService {
 		project.setEndDate(request.getEndDate());
 
 		project = repository.save(project);
-		if(null!=project) {
-			projectSearchRepository.save(
-			        mapSearchDocument(project)
-			);
-		}
+		/*
+		 * if(null!=project) { projectSearchRepository.save( mapSearchDocument(project)
+		 * ); }
+		 */
 
 		return map(project);
 
@@ -143,9 +151,10 @@ public class ProjectServiceImpl implements ProjectService {
 		project.setStatus(ProjectStatus.ARCHIVED);
 
 		project = repository.save(project);
-		if(null!=project && project.isArchived()) {
-			projectSearchRepository.deleteById(project.getId());
-		}
+		/*
+		 * if(null!=project && project.isArchived()) {
+		 * projectSearchRepository.deleteById(project.getId()); }
+		 */
 
 	}
 
@@ -192,34 +201,34 @@ public class ProjectServiceImpl implements ProjectService {
 		return response;
 	}
 	
-	public ProjectDocument mapSearchDocument(Project project){
-
-	    return ProjectDocument.builder()
-
-	            .id(project.getId())
-
-	            .name(project.getName())
-
-	            .description(project.getDescription())
-
-	            .status(project.getStatus())
-
-	            .ownerId(project.getOwnerId())
-
-	            .startDate(project.getStartDate())
-
-	            .endDate(project.getEndDate())
-
-	            .build();
-
-	}
-	
-	@Override
-	public List<ProjectDocument> elasticSearch(String keyword){
-
-	    return projectSearchRepository
-	            .findByNameContaining(keyword);
-
-	}
+	/*
+	 * public ProjectDocument mapSearchDocument(Project project){
+	 * 
+	 * return ProjectDocument.builder()
+	 * 
+	 * .id(project.getId())
+	 * 
+	 * .name(project.getName())
+	 * 
+	 * .description(project.getDescription())
+	 * 
+	 * .status(project.getStatus())
+	 * 
+	 * .ownerId(project.getOwnerId())
+	 * 
+	 * .startDate(project.getStartDate())
+	 * 
+	 * .endDate(project.getEndDate())
+	 * 
+	 * .build();
+	 * 
+	 * }
+	 * 
+	 * @Override public List<ProjectDocument> elasticSearch(String keyword){
+	 * 
+	 * return projectSearchRepository .findByNameContaining(keyword);
+	 * 
+	 * }
+	 */
 
 }

@@ -57,22 +57,12 @@ public class TaskServiceImpl implements TaskService {
 				.estimatedHours(request.getEstimatedHours()).status(TaskStatus.TODO).build();
 
 		task = repository.save(task);
-		TaskCreatedEvent event = new TaskCreatedEvent(
-
-				task.getId(),
-
-				task.getProjectId(),
-
-				task.getAssignedTo(),
-
-				task.getTitle(),
-
-				task.getCreatedAt()
-
-		);
-
-		taskEventProducer.publishTaskCreated(event);
-
+		if (null != task) {
+			TaskCreatedEvent taskCreatedEvent = TaskCreatedEvent.builder().taskId(task.getId().toString())
+					.projectId(task.getProjectId().toString()).assignedUserId(task.getAssignedTo().toString())
+					.status(task.getStatus().name()).title(task.getTitle()).createdAt(task.getCreatedAt()).build();
+			taskEventProducer.publishTaskCreated(taskCreatedEvent);
+		}
 		return map(task);
 	}
 
