@@ -1,19 +1,28 @@
 package com.taskflow.common.events;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-public record TaskCreatedEvent(
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-        UUID taskId,
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class TaskCreatedEvent {
 
-        UUID projectId,
+	private String taskId;
 
-        UUID assignedUserId,
+	private String projectId;
 
-        String title,
+	private String assignedUserId;
 
-        LocalDateTime createdAt
+	private String title;
 
-) {
+	private String status;
+
+	private LocalDateTime createdAt;
+
 }

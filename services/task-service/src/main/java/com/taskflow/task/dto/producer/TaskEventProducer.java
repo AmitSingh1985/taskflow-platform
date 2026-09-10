@@ -18,7 +18,7 @@ public class TaskEventProducer {
 
         kafkaTemplate.send(
                 KafkaTopics.TASK_CREATED,
-                event.taskId().toString(),
+                event.getTaskId().toString(),
                 event);
 
     }

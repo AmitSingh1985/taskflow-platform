@@ -8,9 +8,11 @@ import com.taskflow.common.events.TaskCreatedEvent;
 import com.taskflow.notification.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationConsumer {
 
     private final NotificationService notificationService;
@@ -20,9 +22,9 @@ public class NotificationConsumer {
             groupId = "notification-group")
     public void consume(TaskCreatedEvent event){
 
-        System.out.println("Received Event");
+        log.info("Received Event");
 
-        System.out.println(event);
+        log.info(""+event.getTaskId());
 
         notificationService.save(event);
 

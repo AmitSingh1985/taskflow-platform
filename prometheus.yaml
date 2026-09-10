@@ -26,3 +26,15 @@ scrape_configs:
     static_configs:
       - targets:
           - "task-service:8083"
+ 
+  - job_name: "notification-service"
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets:
+          - "notification-service:8084"
+
+  - job_name: "search-service"
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets:
+          - "search-service:8086"

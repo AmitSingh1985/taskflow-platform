@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.taskflow.common.enums.Status;
 import com.taskflow.common.events.TaskCreatedEvent;
 import com.taskflow.notification.entity.Notification;
 import com.taskflow.notification.repository.NotificationRepository;
@@ -27,15 +28,15 @@ public class NotificationServiceImpl
 
                         .id(UUID.randomUUID())
 
-                        .taskId(event.taskId())
+                        .taskId(UUID.fromString(event.getTaskId()))
 
-                        .projectId(event.projectId())
+                        .projectId(UUID.fromString(event.getProjectId()))
 
-                        .assignedUserId(event.assignedUserId())
+                        .assignedUserId(UUID.fromString(event.getAssignedUserId()))
 
-                        .title(event.title())
+                        .title(event.getTitle())
 
-                        .status("NEW")
+                        .status(Status.ACTIVE.name())
 
                         .createdAt(LocalDateTime.now())
 

@@ -1,15 +1,12 @@
-package com.taskflow.project.document;
+package com.taskflow.search.document;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-
-import com.taskflow.project.enums.ProjectStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,12 +19,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @Document(indexName = "projects")
 public class ProjectDocument {
 
 	@Id
-	private UUID id;
+	private String id;
 
 	@Field(type = FieldType.Text)
 	private String name;
@@ -36,10 +32,10 @@ public class ProjectDocument {
 	private String description;
 
 	@Field(type = FieldType.Keyword)
-	private ProjectStatus status;
+	private String status;
 
 	@Field(type = FieldType.Keyword)
-	private UUID ownerId;
+	private String ownerId;
 
 	@Field(type = FieldType.Date, format = DateFormat.date)
 	private LocalDate startDate;
