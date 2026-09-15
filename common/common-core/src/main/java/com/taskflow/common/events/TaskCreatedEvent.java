@@ -25,4 +25,17 @@ public class TaskCreatedEvent {
 
 	private LocalDateTime createdAt;
 
+	// Below Added for AI Prediction for Task Priority
+
+	private String priority;
+
+	private double complexity;
+
+	private double urgency;
+
+	private double dependencyCount;
+
+	private double estimatedHours;
+
+	private String description;
 }

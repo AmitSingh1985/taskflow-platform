@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.taskflow.task.exception.AiServiceUnavailableException;
 import com.taskflow.task.exception.ProjectNotFoundException;
 import com.taskflow.task.exception.ProjectServiceException;
 import com.taskflow.task.exception.ProjectServiceUnavailableException;
@@ -72,6 +73,22 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(response);
+    }
+    
+    @ExceptionHandler(AiServiceUnavailableException.class)
+    public ResponseEntity<ApiErrorResponse> handleAiServiceUnavailableError(
+            AiServiceUnavailableException ex) {
+
+        ApiErrorResponse response = new ApiErrorResponse(
+                HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "AI_SERVICE_UNAVAILABLE",
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body(response);
     }
 }

@@ -54,7 +54,7 @@ public class TaskServiceImpl implements TaskService {
 		task = Task.builder().projectId(request.getProjectId()).title(request.getTitle())
 				.description(request.getDescription()).priority(request.getPriority())
 				.assignedTo(request.getAssignedTo()).createdBy(userId).dueDate(request.getDueDate())
-				.estimatedHours(request.getEstimatedHours()).status(TaskStatus.TODO).build();
+				.estimatedHours(request.getEstimatedHours().intValue()).status(TaskStatus.TODO).build();
 
 		task = repository.save(task);
 		if (null != task) {

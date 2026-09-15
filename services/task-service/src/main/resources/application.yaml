@@ -15,11 +15,11 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
-#    consumer:
-#      group-id: task-service
-#      auto-offset-reset: earliest
-#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    consumer:
+      group-id: task-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
 
       properties:
         spring.json.trusted.packages: "*"
@@ -62,28 +62,40 @@ management:
          
 
 resilience4j:
-
-  circuitbreaker:
-
+  retry:
     instances:
 
-      getProjectService:
-
-        sliding-window-type: COUNT_BASED
-        sliding-window-size: 10
-
-        failure-rate-threshold: 50
-
-        wait-duration-in-open-state: 10s
-
-        permitted-number-of-calls-in-half-open-state: 3
-
-        minimum-number-of-calls: 5
-        
+      projectService:
         max-attempts: 3
-        
-        wait-duration: 500ms
-        
+        wait-duration: 1s
         retry-exceptions:
           - feign.FeignException
           - java.io.IOException
+
+      aiService:
+        max-attempts: 2
+        wait-duration: 1s
+        retry-exceptions:
+          - feign.RetryableException
+
+  circuitbreaker:
+    instances:
+
+      projectService:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+
+      aiService:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 2
+        
+        
+        
+        
+        
+        
