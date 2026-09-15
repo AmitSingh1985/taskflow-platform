@@ -74,7 +74,7 @@ services:
 
     depends_on:
       - postgres
-      - otel-collector
+      #- otel-collector
       - discovery-server
       
 
@@ -111,7 +111,7 @@ services:
 
     depends_on:
       - postgres
-      - otel-collector
+      #- otel-collector
       - kafka
       - redis
       #- elasticsearch
@@ -155,7 +155,7 @@ services:
 
     depends_on:
       - postgres
-      - otel-collector
+      #- otel-collector
       - kafka
       - redis
       - discovery-server
@@ -195,7 +195,7 @@ services:
 
     depends_on:
       - postgres
-      - otel-collector
+      #- otel-collector
       - kafka
       - redis
       - discovery-server
@@ -235,7 +235,7 @@ services:
 
     depends_on:
       - postgres
-      - otel-collector
+      #- otel-collector
       - kafka
       ##- redis
       - discovery-server
@@ -268,7 +268,51 @@ services:
       OTEL_INSTRUMENTATION_SPRING_WEB_EXCLUDE_URLS: "/actuator/.*"
 
     networks:
-      - taskflow-network    
+      - taskflow-network
+
+
+  ai-service:
+    image: taskflow/ai-service:1.0
+    container_name: ai-service
+
+    depends_on:
+      ##- postgres
+      #- otel-collector
+      - kafka
+      ##- redis
+      - discovery-server
+      ##- elasticsearch
+      - ollama
+     
+
+    ports:
+      - "8087:8087"
+      
+
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      ##DB_URL: jdbc:postgresql://postgres:5432/taskflow_task
+      ##DB_USERNAME: postgres
+      ##DB_PASSWORD: postgres123
+      KAFKA_SERVER: kafka:29092
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      ##ELASTIC_SEARCH: http://elasticsearch:9200
+      OLLAMA_SERVER: http://ollama:11434
+      JAVA_TOOL_OPTIONS: "-javaagent:/otel/opentelemetry-javaagent.jar"
+      OTEL_SERVICE_NAME: search-service
+      OTEL_EXPORTER_OTLP_TIMEOUT: "30000"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+      OTEL_INSTRUMENTATION_LOGBACK_MDC_ENABLED: "true"
+      OTEL_TRACES_SAMPLER: always_on
+      # Don't create traces for Actuator endpoints
+      OTEL_INSTRUMENTATION_SPRING_WEB_EXCLUDE_URLS: "/actuator/.*"
+
+    networks:
+      - taskflow-network      
     
   
   
@@ -278,4 +322,3 @@ volumes:
 
 networks:
   taskflow-network:
-   

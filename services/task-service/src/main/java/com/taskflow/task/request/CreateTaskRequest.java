@@ -29,6 +29,15 @@ public class CreateTaskRequest {
 
     private LocalDate dueDate;
 
-    private Integer estimatedHours;
+    //private Integer estimatedHours;
+    
+    //Added for AI prediction
+    private Double complexity;
+
+    private Double urgency;
+
+    private Integer dependencyCount;
+
+    private Double estimatedHours;
 
 }

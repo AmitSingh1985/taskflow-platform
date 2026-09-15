@@ -78,5 +78,15 @@ public class Task {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
+    
+    //Added for AI Prediction
+    @Column(name = "predicted_priority")
+    private String predictedPriority;
+
+    @Column(name = "ai_confidence")
+    private Double aiConfidence;
+
+    @Column(name = "ai_model_version")
+    private String aiModelVersion;
 
 }

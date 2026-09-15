@@ -15,5 +15,8 @@ public class KafkaTopics {
     public static final String PROJECT_UPDATED = "project-updated";
 
     public static final String PROJECT_DELETED = "project-deleted";
+   
+    public static final String TASK_INTELLIGENCE_GENERATED =
+            "task-intelligence-generated";
 
 }

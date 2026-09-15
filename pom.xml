@@ -41,6 +41,7 @@
 		<module>services/task-service</module>
 		<module>services/notification-service</module>
 		<module>services/search-service</module>
+		<module>services/ai-service</module>
 	</modules>
 
 	<!-- 5. Centralized version management for custom libraries -->

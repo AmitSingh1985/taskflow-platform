@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: ai-service
+
+  profiles:
+    active: local
+ 
+  ai:
+    ollama:
+      base-url: ${OLLAMA_SERVER:http://localhost:11434}
+      chat:
+        options:
+          model: qwen2.5:1.5b
+          temperature: 0.2
+   
+  
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER:localhost:9092}
+
+    consumer:
+      group-id: ai-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    properties:
+      spring.json.trusted.packages: "*"
+
+server:
+  port: 8087
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka/}
+
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - metrics
+          - prometheus
+
+taskflow:
+    ai:
+      model-path: ./models/task-priority-v1.zip
